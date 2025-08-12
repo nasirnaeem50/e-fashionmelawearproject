@@ -95,7 +95,7 @@ app.use(xss());
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,          // e.g. https://myapp.com
-  process.env.FRONTEND_URL_PREVIEW || 'http://localhost:3000',
+  'http://localhost:3000',
    // e.g. https://myapp.vercel.app
   // Local dev
 ];
