@@ -90,7 +90,8 @@ const corsOptions = {
   credentials: true
 };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors({ origin: true, credentials: true }));
 
 // Rate Limiting Middleware
 const limiter = rateLimit({
