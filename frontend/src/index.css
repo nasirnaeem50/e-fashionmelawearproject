@@ -1,0 +1,161 @@
+/*
+  ==========================================
+  PART 1: DEFINE THEME VARIABLES
+  ==========================================
+*/
+@layer base {
+  /* --- Light Theme Variables (Default) --- */
+  :root {
+    --background: #ffffff;
+    --foreground: #111827;
+    --card: #ffffff;
+    --card-foreground: #111827;
+    --muted: #f3f4f6;
+    --muted-foreground: #6b7280;
+    --border: #e5e7eb;
+    --input-bg: #ffffff;
+    --header-nav-bg: #2d2d2d;
+    --mobile-menu-bg: #2d2d2d;
+    --mobile-input-bg: #4b5563;
+  }
+
+  /* --- Dark Theme Variables --- */
+  .dark {
+    --background: #111827;
+    --foreground: #ffffff;
+    --card: #111827;
+    --card-foreground: #ffffff;
+    --muted: #374151; /* A slightly lighter dark for muted backgrounds */
+    --muted-hover: #4b5563; /* A dedicated hover color */
+    --muted-foreground: #9ca3af;
+    --border: #374151;
+    --input-bg: #374151;
+    --header-nav-bg: #1f2937;
+    --mobile-menu-bg: #1f2937;
+    --mobile-input-bg: #4b5563;
+  }
+
+  /* --- Global Styles Application --- */
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    transition-property: color, background-color;
+    transition-duration: 300ms;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/*
+  ==========================================
+  PART 2: IMPORT TAILWIND STYLES
+  ==========================================
+*/
+@import "tailwindcss";
+
+/*
+  ==========================================
+  PART 3: THEME OVERRIDES
+  ==========================================
+*/
+
+/* Main container fix for popovers, cards, etc. */
+.dark .bg-white {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border-color: var(--border); /* Ensure borders are also updated */
+}
+
+/* Specific background overrides */
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+  background-color: var(--muted);
+}
+.dark .bg-gray-700 { background-color: var(--mobile-input-bg); }
+.dark [class*="bg-[#2d2d2d]"] { background-color: var(--header-nav-bg); }
+
+/* Gradient fix */
+.dark .bg-gradient-to-b.from-gray-50.to-white {
+  background-image: linear-gradient(to bottom, var(--background), var(--card));
+}
+
+/* Border Colors */
+.dark .border,
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-300 {
+  border-color: var(--border);
+}
+.dark .divide-y > :not([hidden]) ~ :not([hidden]),
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--border);
+}
+
+/* Text Color Overrides */
+/* This rule ensures that any gray text becomes lighter in dark mode */
+.dark .text-gray-500,
+.dark .text-gray-600,
+.dark .text-gray-700 {
+  color: var(--muted-foreground);
+}
+.dark .text-gray-800,
+.dark .text-gray-900,
+.dark .text-black {
+  color: var(--foreground);
+}
+
+/*
+  ================================================================
+  --- NEW: THE FIX FOR HOVER STATES AND OTHER SPECIFIC ISSUES ---
+  ================================================================
+*/
+
+/* General hover fixes for light gray backgrounds */
+.dark [class*="hover:bg-gray-50"]:hover,
+.dark [class*="hover:bg-gray-100"]:hover {
+  background-color: var(--muted-hover) !important;
+}
+
+/* Specific hover fix for dashboard quick-add links */
+.dark [class*="hover:bg-red-50"]:hover {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+.dark [class*="hover:text-red-600"]:hover {
+  color: #ef4444 !important; /* Tailwind's red-500 */
+}
+
+/* Fix for profile dropdown text color on hover */
+.dark .hover\:text-red-600:hover {
+    color: #ef4444 !important; /* Ensures text becomes red on hover */
+}
+
+
+/* SCOPED Form Element Overrides */
+.dark main input[type="text"],
+.dark main select {
+  background-color: var(--input-bg);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+.dark main ::placeholder {
+  color: var(--muted-foreground);
+}
+
+/* Header Logo Fix (inverts the image colors) */
+.dark img[alt="Zolmo"] {
+  filter: invert(1);
+}
+
+/*
+  ==================================================================
+  --- FINAL, CORRECT BRANDS SECTION EXCEPTION BLOCK ---
+  This block ONLY targets the circular logo backgrounds to keep them white.
+  ==================================================================
+*/
+.dark #brands-section .rounded-full.bg-white {
+  background-color: #ffffff !important;
+}
+
+.dark #brands-section img {
+  filter: invert(0) !important;
+}

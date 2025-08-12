@@ -1,0 +1,1 @@
+This project is a modern fashion e-commerce frontend built using React and Vite, providing a fast and optimized development experience with Hot Module Replacement (HMR) and custom ESLint rules for cleaner code.
