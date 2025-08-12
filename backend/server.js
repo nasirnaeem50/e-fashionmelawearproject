@@ -74,24 +74,48 @@ app.use(xss());
 
 // --- ✅ DYNAMIC CORS CONFIGURATION - CORRECTED FOR PRODUCTION ✅ ---
 // This now relies only on the FRONTEND_URL from your .env file.
-const allowedOrigins = [process.env.FRONTEND_URL];
+// const allowedOrigins = [process.env.FRONTEND_URL];
+
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     // allow requests with no origin (like mobile apps or curl requests)
+//     if (!origin) return callback(null, true);
+    
+//     if (allowedOrigins.indexOf(origin) === -1) {
+//       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+//       return callback(new Error(msg), false);
+//     }
+//     return callback(null, true);
+//   },
+//   credentials: true
+// };
+
+// // app.use(cors(corsOptions));
+// app.use(cors({ origin: true, credentials: true })); // only for testing
+
+const allowedOrigins = [
+  process.env.FRONTEND_URL,          // e.g. https://myapp.com
+  process.env.FRONTEND_URL_PREVIEW || 'http://localhost:3000',
+   // e.g. https://myapp.vercel.app
+  // Local dev
+];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps or curl requests)
+    // Allow requests with no origin (like curl, mobile apps)
     if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      console.error(`❌ CORS blocked: ${origin}`);
+      return callback(new Error('CORS policy does not allow this origin.'), false);
     }
-    return callback(null, true);
   },
   credentials: true
 };
 
-// app.use(cors(corsOptions));
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors(corsOptions));
 
 // Rate Limiting Middleware
 const limiter = rateLimit({
